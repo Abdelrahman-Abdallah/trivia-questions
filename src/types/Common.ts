@@ -1,5 +1,7 @@
-export enum Level {
-  easy = "easy",
-  medium = "medium",
-  hard = "hard",
-}
+import { FC } from "react";
+
+export type AppRoute = {
+  component: FC;
+  path: string;
+  exact?: boolean;
+};

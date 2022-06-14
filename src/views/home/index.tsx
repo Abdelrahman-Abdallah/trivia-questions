@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from "react";
 import Page from "../../components/page";
 import { CenterdContent } from "../../components/CenteredContent";
 import HomeForm from "./components/HomeForm";
-import { Level } from "../../types/Common";
+import Level from "../../types/Level";
 import Button from "../../components/Button";
 
 const Home = () => {
@@ -22,7 +22,9 @@ const Home = () => {
     <Page title="Home">
       <CenterdContent>
         <HomeForm onChangeName={handleChangeName} value={gameOptions.name} level={gameOptions.level} onChangeLevel={handleChangeLevel} />
-        <Button topMargin={25}>Submit</Button>
+        <Button topMargin={25} disabled={!gameOptions.name}>
+          Submit
+        </Button>
       </CenterdContent>
     </Page>
   );

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import Button from "../../../components/Button";
-import { Level } from "../../../types/Common";
+import Level from "../../../types/Level";
 
 const Content = styled.div`
   display: flex;

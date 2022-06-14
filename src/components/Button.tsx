@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 interface ButtonProps {
   isSelected?: boolean;
   topMargin?: number;
+  disabled?: boolean;
 }
 
 const Button = styled("button")<ButtonProps>`
@@ -19,6 +20,13 @@ const Button = styled("button")<ButtonProps>`
       background-color: black;
       color: white;
     `};
+  ${(props) =>
+    props.disabled &&
+    css`
+      background-color: #ddd;
+      border-color: transparent;
+      cursor: not-allowed;
+    `}
 `;
 
 export default Button;

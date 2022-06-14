@@ -2,7 +2,7 @@ import { ChangeEvent, FC } from "react";
 import styled from "styled-components";
 import Button from "../../../components/Button";
 import TextInput from "../../../components/TextInput";
-import { Level } from "../../../types/Common";
+import Level from "../../../types/Level";
 import LevelButtons from "./LevelButtons";
 
 const Container = styled.div`
