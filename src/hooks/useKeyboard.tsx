@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 interface KeyboardEvent {
   key: string;
@@ -6,28 +6,26 @@ interface KeyboardEvent {
 }
 
 const useKeyboardKey = (onKeyPress: (key: string) => void) => {
-  const [keyPressed, setKeyPressed] = useState<string>("");
-
-  useEffect(() => {
-    const clickFunction = (ev: KeyboardEvent) => {
+  const clickFunction = useCallback(
+    (ev: KeyboardEvent) => {
       console.log(ev);
 
       if (ev.keyCode === 32) {
-        setKeyPressed("SPACE");
         onKeyPress("SPACE");
         return;
       }
-      setKeyPressed(ev.key);
       onKeyPress(ev.key);
-    };
+    },
+    [onKeyPress]
+  );
+
+  useEffect(() => {
     window.addEventListener("keydown", clickFunction);
 
     return () => {
       window.removeEventListener("keydown", clickFunction);
     };
-  }, [onKeyPress]);
-
-  return keyPressed;
+  }, [clickFunction]);
 };
 
 export default useKeyboardKey;

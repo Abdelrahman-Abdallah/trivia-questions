@@ -2,10 +2,14 @@ import { TypedUseSelectorHook, useSelector as useReduxSelector, useDispatch as u
 import { AnyAction, configureStore, ThunkAction } from "@reduxjs/toolkit";
 
 import categoriesReducer from "../slices/Categories";
+import userReducer from "../slices/User";
+import questionReducer from "../slices/Questions";
 
 export const store = configureStore({
   reducer: {
     categories: categoriesReducer,
+    user: userReducer,
+    questions: questionReducer,
   },
   devTools: true,
 });

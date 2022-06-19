@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getCateories } from "../lib/categories";
 import { AppThunk } from "../store/index";
 import { Category } from "../types/Category";
@@ -34,6 +34,7 @@ export const { setCategories, setSelectedCategory } = categoriesSlice.actions;
 export const fetchSliceCategories =
   (): AppThunk =>
   async (dispatch, getState): Promise<void> => {
+    if (getState().categories.categories.length > 0) return;
     const categories = await getCateories();
     console.log("🚀 ~ file: Categories.ts ~ line 89 ~ categories", categories);
     dispatch(setCategories(categories));

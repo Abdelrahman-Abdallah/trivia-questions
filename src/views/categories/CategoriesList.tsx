@@ -18,7 +18,7 @@ interface CategoriesListProps {
 }
 
 const CategoriesList: FC<CategoriesListProps> = ({ onChangeSelectedCategory, selectedCategory }) => {
-  const clickedKey = useKeyboardKey(handleClickedKey);
+  const clickedKey = useKeyboardKey(() => {});
   const { categories, isLoaded } = useSelector((state) => state.categories);
   const selectedCategories = [20];
 

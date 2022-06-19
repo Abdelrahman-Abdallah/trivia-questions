@@ -5,15 +5,18 @@ import { BrowserRouter } from "react-router-dom";
 
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "./store";
+import { Provider as RenditionProvider } from "rendition";
 import Routes from "./routes";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
     <ReduxProvider store={store}>
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
+      <RenditionProvider>
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
+      </RenditionProvider>
     </ReduxProvider>
   </React.StrictMode>
 );
