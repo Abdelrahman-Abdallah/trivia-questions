@@ -7,6 +7,7 @@ import Button from "../../components/Button";
 import { useDispatch } from "src/store";
 import { addUserToken, setUser } from "src/slices/User";
 import { useNavigate } from "react-router-dom";
+import { Container } from "rendition";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -34,12 +35,12 @@ const Home = () => {
 
   return (
     <Page title="Home">
-      <CenterdContent>
+      <Container>
         <HomeForm onChangeName={handleChangeName} value={gameOptions.name} level={gameOptions.level} onChangeLevel={handleChangeLevel} />
         <Button topMargin={25} disabled={!gameOptions.name} onClick={handleSubmit}>
           Submit
         </Button>
-      </CenterdContent>
+      </Container>
     </Page>
   );
 };

@@ -3,13 +3,13 @@ import { AnyAction, configureStore, ThunkAction } from "@reduxjs/toolkit";
 
 import categoriesReducer from "../slices/Categories";
 import userReducer from "../slices/User";
-import questionReducer from "../slices/Questions";
+import answersReducer from "../slices/Answers";
 
 export const store = configureStore({
   reducer: {
     categories: categoriesReducer,
     user: userReducer,
-    questions: questionReducer,
+    answers: answersReducer,
   },
   devTools: true,
 });
@@ -20,3 +20,5 @@ export type AppDispatch = typeof store.dispatch;
 
 export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 export const useDispatch = () => useReduxDispatch<AppDispatch>();
+
+export function resetStore() {}

@@ -36,14 +36,7 @@ export const fetchSliceCategories =
   async (dispatch, getState): Promise<void> => {
     if (getState().categories.categories.length > 0) return;
     const categories = await getCateories();
-    console.log("🚀 ~ file: Categories.ts ~ line 89 ~ categories", categories);
     dispatch(setCategories(categories));
-  };
-
-export const addSelectedCategory =
-  (categoryId: string): AppThunk =>
-  async (dispatch, getState): Promise<void> => {
-    dispatch(setSelectedCategory(categoryId));
   };
 
 export default categoriesSlice.reducer;

@@ -26,16 +26,15 @@ export const userSlice = createSlice({
     setUserToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
     },
+    resetUser: (state): void => {
+      state.level = Level.easy;
+      state.name = "";
+      state.token = "";
+    },
   },
 });
 
 export const { setUser, setUserToken } = userSlice.actions;
-
-export const addUserData =
-  (name: string, level: Level): AppThunk =>
-  (dispatch): void => {
-    dispatch(setUser({ name, level }));
-  };
 
 export const addUserToken =
   (): AppThunk =>

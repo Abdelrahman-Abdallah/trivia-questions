@@ -4,6 +4,7 @@ import { AppRoute } from "./types/Common";
 import Categories from "./views/categories";
 import Home from "./views/home";
 import Questions from "./views/questions";
+import Result from "./views/Result";
 
 const ROUTES: AppRoute[] = [
   {
@@ -11,6 +12,7 @@ const ROUTES: AppRoute[] = [
     component: Categories,
   },
   { path: "/question", component: Questions },
+  { path: "/result", component: Result },
   { path: "/", exact: true, component: Home },
 ];
 

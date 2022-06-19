@@ -46,16 +46,16 @@ const Questions = () => {
     return [...answers];
   }
 
-  // const handleNextQuestion = useCallback(
-  //   (answer: string, time: number) => {
-  //     const isCorrectAnswer = answer === selectedQuestion.correct_answer;
-  //     console.log("🚀 ~ file: index.tsx ~ line 51 ~ handleNextQuestion ~ isCorrectAnswer", isCorrectAnswer);
+  const handleNextQuestion = useCallback(
+    (answer: string, time: number) => {
+      const isCorrectAnswer = answer === selectedQuestion.correct_answer;
+      console.log("🚀 ~ file: index.tsx ~ line 51 ~ handleNextQuestion ~ isCorrectAnswer", isCorrectAnswer);
 
-  //     handleChangeNextQuestion();
-  //     // dispatch(addQuestionStatus({ category, time, status: isCorrectAnswer ? "correct" : "wrong" }));
-  //   },
-  //   [handleChangeNextQuestion, selectedQuestion.correct_answer]
-  // );
+      handleChangeNextQuestion();
+      // dispatch(addQuestionStatus({ category, time, status: isCorrectAnswer ? "correct" : "wrong" }));
+    },
+    [handleChangeNextQuestion, selectedQuestion.correct_answer]
+  );
 
   const handleNextQuestion = (answer: string, time: number) => {
     const isCorrectAnswer = answer === selectedQuestion.correct_answer;
@@ -76,7 +76,7 @@ const Questions = () => {
   function handleSkipQuestion(time: number): void {
     console.log("🚀 ~ file: index.tsx ~ line 61 ~ handleSkipQuestion ~ time", time);
     handleChangeNextQuestion();
-    // dispatch(addQuestionStatus({ category, time, status: "skipped" }));
+    dispatch(addQuestionStatus({ category, time, status: "skipped" }));
   }
 
   function renderQuestion() {
