@@ -16,11 +16,11 @@ interface QuestionItemProps {
   timing?: number;
 }
 const QuestionItem: FC<QuestionItemProps> = ({ onNext, question, onSkip, answers, timing }) => {
-  // const level = useSelector((state) => state.user.level);
-  // const time = level === Level.easy ? 90 : level === Level.medium ? 60 : 30;
-  const time = 20;
+  const level = useSelector((state) => state.user.level);
   const [selectedAnswer, setSelectedAnswer] = useState("");
-  console.log("🚀 ~ file: QuestionItem.tsx ~ line 23 ~ selectedAnswer", selectedAnswer);
+
+  const time = level === Level.easy ? 90 : level === Level.medium ? 60 : 30;
+
   const currentTime = useTimer(time, onSkip, question.question);
 
   const handleSubmit = useCallback(() => {

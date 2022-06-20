@@ -1,13 +1,15 @@
 import { ApexOptions } from "apexcharts";
 import React from "react";
 import Chart from "react-apexcharts";
+import { useSelector } from "src/store";
 import { extractPieData } from "./helpers";
 
 const PieChart = () => {
-  const data = extractPieData();
+  const answers = useSelector((state) => state.answers.answers);
+
+  const data = extractPieData(answers);
   const label = Object.keys(data);
   const series = Object.values(data);
-  console.log("🚀 ~ file: PieChart.tsx ~ line 10 ~ PieChart ~ series", series);
 
   const options: ApexOptions = {
     labels: label,

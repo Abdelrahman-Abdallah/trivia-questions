@@ -5,13 +5,13 @@ import { Category } from "../types/Category";
 
 interface CategoriesState {
   categories: Category[];
-  selectedCategorys: string[];
+  selectedCategories: string[];
   isLoaded: boolean;
 }
 
 const initialState: CategoriesState = {
   categories: [],
-  selectedCategorys: [],
+  selectedCategories: [],
   isLoaded: false,
 };
 
@@ -23,13 +23,13 @@ export const categoriesSlice = createSlice({
       state.categories = action.payload;
       state.isLoaded = true;
     },
-    setSelectedCategory: (state, action: PayloadAction<string>) => {
-      state.selectedCategorys = [...state.selectedCategorys, action.payload];
+    addSelectedCategory: (state, action: PayloadAction<string>) => {
+      state.selectedCategories = [...state.selectedCategories, action.payload];
     },
   },
 });
 
-export const { setCategories, setSelectedCategory } = categoriesSlice.actions;
+export const { setCategories, addSelectedCategory } = categoriesSlice.actions;
 
 export const fetchSliceCategories =
   (): AppThunk =>

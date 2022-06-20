@@ -1,8 +1,10 @@
 import React, { FC, useState } from "react";
+import { useCallback } from "react";
 import { useSelector } from "src/store";
 import styled from "styled-components";
 import useKeyboardKey from "../../hooks/useKeyboard";
 import CategoryItem from "./CategoryItem";
+import { getSelectedId } from "./helpers";
 
 const CategoryContainer = styled.div`
   display: grid;
@@ -18,21 +20,24 @@ interface CategoriesListProps {
 }
 
 const CategoriesList: FC<CategoriesListProps> = ({ onChangeSelectedCategory, selectedCategory }) => {
-  const clickedKey = useKeyboardKey(() => {});
-  const { categories, isLoaded } = useSelector((state) => state.categories);
-  const selectedCategories = [20];
+  const { categories, isLoaded, selectedCategories } = useSelector((state) => state.categories);
+  const handleKeyClick = useCallback(
+    (key: string) => {
+      const id = getSelectedId(
+        key,
+        selectedCategory,
+        3,
+        categories.map((cat) => cat.id)
+      );
+      if (id) onChangeSelectedCategory(id);
+    },
+    [categories, onChangeSelectedCategory, selectedCategory]
+  );
 
-  const [focusedId, setFocusedId] = useState("");
+  useKeyboardKey(handleKeyClick);
 
   function handleItemClick(catId: string): void {
-    setFocusedId(catId);
     onChangeSelectedCategory(catId);
-  }
-
-  function handleClickedKey(key: string): void {
-    const focusedIndex = categories.findIndex((cat) => cat.id === focusedId);
-    const id = focusedIndex === -1 ? categories[0].id : categories[focusedIndex + 1].id;
-    setFocusedId(id);
   }
 
   function renderCategories(): JSX.Element[] | JSX.Element {
@@ -41,9 +46,9 @@ const CategoriesList: FC<CategoriesListProps> = ({ onChangeSelectedCategory, sel
       <CategoryItem
         key={cat.id}
         category={cat}
-        isFocused={cat.id === focusedId}
+        isFocused={cat.id === selectedCategory}
         currentlySelected={selectedCategory === cat.id}
-        previouslySelected={selectedCategories.includes(+cat.id)}
+        previouslySelected={selectedCategories.includes(cat.id)}
         onItemClick={handleItemClick}
       />
     ));

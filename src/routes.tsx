@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
+import CategoriesGuard from "./guards/categoriesGuard";
 import { AppRoute } from "./types/Common";
 import Categories from "./views/categories";
 import Home from "./views/home";
@@ -10,6 +11,7 @@ const ROUTES: AppRoute[] = [
   {
     path: "/categories",
     component: Categories,
+    guard: CategoriesGuard,
   },
   { path: "/question", component: Questions },
   { path: "/result", component: Result },
@@ -18,7 +20,17 @@ const ROUTES: AppRoute[] = [
 
 const AppRoutes = () => {
   function renderRoutes(): JSX.Element[] {
-    return ROUTES.map(({ component: Element, path }) => <Route key={path} path={path} element={<Element />} />);
+    return ROUTES.map(({ component: Element, path, guard: Guard = Fragment }) => (
+      <Route
+        key={path}
+        path={path}
+        element={
+          <Guard>
+            <Element />
+          </Guard>
+        }
+      />
+    ));
   }
 
   return <Routes>{renderRoutes()}</Routes>;

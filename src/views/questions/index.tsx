@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "src/components/page";
 import { getQuestions } from "src/lib/questions";
+import { addAnswer } from "src/slices/Answers";
 // import { addQuestionStatus } from "src/slices/Questions";
 import { useDispatch, useSelector } from "src/store";
 import { Question } from "src/types/Question";
@@ -10,35 +11,41 @@ import QuestionItem from "./QuestionItem";
 
 const Questions = () => {
   const navigate = useNavigate();
-  const [questions, setQuestions] = useState<Question[]>(QUESTIONS);
-  const [selectedQuestion, setSelectedQuesiton] = useState(QUESTIONS[0]);
+  const dispatch = useDispatch();
+  const { level, token } = useSelector((state) => state.user);
+  const selectedCateogy = useSelector((state) => state.categories.selectedCategories);
+
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [selectedQuestion, setSelectedQuesiton] = useState<Question | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // const dispatch = useDispatch();
-  // const selectedCateogy = useSelector((state) => state.categories.selectedCategorys);
-  // const { level, token } = useSelector((state) => state.user);
-  // const [questions, setQuestions] = useState<Question[]>([]);
-  // const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
-  // const category = selectedCateogy[selectedCateogy.length - 1];
+  const category = selectedCateogy[selectedCateogy.length - 1];
+  console.log("🚀 ~ file: index.tsx ~ line 22 ~ Questions ~ category", category);
 
-  // useEffect(() => {
-  //   getQuestions(level, token, category).then((res) => {
-  //     console.log(res);
-  //     setQuestions(res);
-  //     setSelectedQuestion(0);
-  //   });
-  // }, [level, token, category]);
+  const fetchQuestions = useCallback(async () => {
+    try {
+      const questions = await getQuestions(level, token, category);
+      console.log("🚀 ~ file: index.tsx ~ line 27 ~ fetchQuestions ~ questions", questions);
+      setQuestions(questions);
+      setSelectedQuesiton(questions[0]);
+    } catch (err) {
+      console.log("🚀 ~ file: index.tsx ~ line 33 ~ fetchQuestions ~ err", err);
+    }
+  }, [level, token, category]);
+
+  useEffect(() => {
+    fetchQuestions();
+  }, [level, token, category, fetchQuestions]);
 
   const handleChangeNextQuestion = useCallback((): void => {
+    if (!selectedQuestion) return;
     const index = questions.findIndex(({ question }) => question === selectedQuestion.question);
-    console.log("🚀 ~ file: index.tsx ~ line 37 ~ handleSkipQuestion ~ index", index);
     if (index === questions.length - 1) {
-      console.log(` we reached the end of the questions`);
       navigate("/categories");
     } else {
       setSelectedQuesiton({ ...questions[index + 1] });
     }
-  }, [navigate, questions, selectedQuestion.question]);
+  }, [navigate, questions, selectedQuestion]);
 
   function getShuffledAnswers(): string[] {
     const answers = [...selectedQuestion.incorrect_answers, selectedQuestion.correct_answer];
@@ -47,40 +54,24 @@ const Questions = () => {
   }
 
   const handleNextQuestion = useCallback(
-    (answer: string, time: number) => {
+    (answer: string, duration: number) => {
+      if (!selectedQuestion) return;
       const isCorrectAnswer = answer === selectedQuestion.correct_answer;
-      console.log("🚀 ~ file: index.tsx ~ line 51 ~ handleNextQuestion ~ isCorrectAnswer", isCorrectAnswer);
 
+      dispatch(addAnswer({ category, duration, status: isCorrectAnswer ? "correct" : "wrong" }));
       handleChangeNextQuestion();
-      // dispatch(addQuestionStatus({ category, time, status: isCorrectAnswer ? "correct" : "wrong" }));
     },
-    [handleChangeNextQuestion, selectedQuestion.correct_answer]
+    [handleChangeNextQuestion, selectedQuestion, category, dispatch]
   );
 
-  const handleNextQuestion = (answer: string, time: number) => {
-    const isCorrectAnswer = answer === selectedQuestion.correct_answer;
-    console.log("🚀 ~ file: index.tsx ~ line 61 ~ handleNextQuestion ~ time", time);
-    console.log("🚀 ~ file: index.tsx ~ line 51 ~ handleNextQuestion ~ isCorrectAnswer", isCorrectAnswer);
-
-    // const index = questions.findIndex(({ question }) => question === selectedQuestion.question);
-    // if (index === questions.length - 1) {
-    //   console.log(` we reached the end of the questions`);
-    //   // navigate("/categories");
-    // } else {
-    //   setSelectedQuesiton({ ...questions[index + 1] });
-    // }
+  function handleSkipQuestion(duration: number): void {
+    dispatch(addAnswer({ category, duration, status: "skipped" }));
     handleChangeNextQuestion();
-    // dispatch(addQuestionStatus({ category, time, status: isCorrectAnswer ? "correct" : "wrong" }));
-  };
-
-  function handleSkipQuestion(time: number): void {
-    console.log("🚀 ~ file: index.tsx ~ line 61 ~ handleSkipQuestion ~ time", time);
-    handleChangeNextQuestion();
-    dispatch(addQuestionStatus({ category, time, status: "skipped" }));
   }
 
   function renderQuestion() {
-    if (questions.length === 0) return <h1>Loading...</h1>;
+    if (isLoading) return <h1>LOADING</h1>;
+    if (questions.length === 0 || !selectedQuestion || isLoading) return <h1>Loading...</h1>;
     return <QuestionItem question={selectedQuestion} onNext={handleNextQuestion} onSkip={handleSkipQuestion} answers={getShuffledAnswers()} />;
   }
 

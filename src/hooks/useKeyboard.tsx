@@ -8,8 +8,6 @@ interface KeyboardEvent {
 const useKeyboardKey = (onKeyPress: (key: string) => void) => {
   const clickFunction = useCallback(
     (ev: KeyboardEvent) => {
-      console.log(ev);
-
       if (ev.keyCode === 32) {
         onKeyPress("SPACE");
         return;

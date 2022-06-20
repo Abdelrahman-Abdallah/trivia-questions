@@ -7,13 +7,14 @@ import PageHeader from "../../components/PageHeader";
 import { fetchSliceCategories, addSelectedCategory } from "src/slices/Categories";
 import CategoriesList from "./CategoriesList";
 import { useNavigate } from "react-router-dom";
+import { Box } from "rendition";
 
 const Categories = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.name);
-  console.log("🚀 ~ file: index.tsx ~ line 16 ~ Categories ~ user", user);
+  const selectedCategories = useSelector((state) => state.categories.selectedCategories);
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const Categories = () => {
   }, [dispatch, user, navigate]);
 
   function handleChangeSelectedCategory(catId: string): void {
+    if (selectedCategories.includes(catId)) return;
     setSelectedCategory(catId);
   }
   function handleSelectCategory(): void {
@@ -35,11 +37,13 @@ const Categories = () => {
     <Page title="categories">
       <PageHeader>Questions Categories</PageHeader>
       <CategoriesList selectedCategory={selectedCategory} onChangeSelectedCategory={handleChangeSelectedCategory} />
-      <CenteredItemComponet>
-        <Button topMargin={20} disabled={!selectedCategory} onClick={handleSelectCategory}>
-          Play
-        </Button>
-      </CenteredItemComponet>
+      <Box marginBottom="20px" paddingTop="25px" paddingBottom="25px">
+        <CenteredItemComponet>
+          <Button disabled={!selectedCategory} onClick={handleSelectCategory}>
+            Play
+          </Button>
+        </CenteredItemComponet>
+      </Box>
     </Page>
   );
 };

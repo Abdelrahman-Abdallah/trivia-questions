@@ -1,12 +1,13 @@
 import React from "react";
 import { Box, Flex, Heading } from "rendition";
-import { ANSWERS } from "src/__mocks__/Answers";
+import { useSelector } from "src/store";
 
 const AnswersDuration = () => {
-  const totalsecons = ANSWERS.reduce((seconds, v) => seconds + v.duration, 0);
-  console.log("🚀 ~ file: AnswersDuration.tsx ~ line 7 ~ AnswersDuration ~ totalsecons", totalsecons);
-  const minites = Math.floor(totalsecons / 60);
-  const seconds = totalsecons - 60 * minites;
+  const answers = useSelector((state) => state.answers.answers);
+  const totalseconds = answers.reduce((seconds, v) => seconds + v.duration, 0);
+  console.log("🚀 ~ file: AnswersDuration.tsx ~ line 7 ~ AnswersDuration ~ totalsecons", totalseconds);
+  const minites = Math.floor(totalseconds / 60);
+  const seconds = totalseconds - 60 * minites;
 
   return (
     <Flex height="100%" justifyContent="center" alignItems="center">

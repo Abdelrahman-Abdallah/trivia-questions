@@ -8,10 +8,19 @@ import LevelButtons from "./LevelButtons";
 const Container = styled.div`
   background-color: #ddd;
   padding: 1rem;
-  width: 30%;
+  width: 45%;
   text-align: center;
   padding: 3rem 0.4rem;
   border-radius: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 60%;
+  }
+  @media (max-width: 540px) {
+    flex-direction: column;
+    width: 95%;
+  }
 `;
 
 interface HomeFormProps {

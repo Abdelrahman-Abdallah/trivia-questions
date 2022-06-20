@@ -1,12 +1,12 @@
-import { ANSWERS } from "src/__mocks__/Answers";
-export function extractStackChartData() {
-  const categories = [...new Set(ANSWERS.map((answer) => answer.category))];
+import { QuestionAnswer } from "src/types/Answer";
+
+export function extractStackChartData(answers: QuestionAnswer[]) {
+  const categories = [...new Set(answers.map((answer) => answer.category))];
   const baseZeroArray = new Array(categories.length).fill(0);
 
-  const mappedAnswers = ANSWERS.reduce(
+  const mappedAnswers = answers.reduce(
     (acc, answer) => {
       const categoryIndex = categories.indexOf(answer.category);
-      console.log("🚀 ~ file: helpers.ts ~ line 8 ~ extractStackChartData ~ categoryIndex", categoryIndex);
       acc[answer.status][categoryIndex] = acc[answer.status][categoryIndex] ? acc[answer.status][categoryIndex] + 1 : 1;
       return acc;
     },
@@ -26,8 +26,8 @@ export function extractStackChartData() {
   };
 }
 
-export function extractPieData() {
-  return ANSWERS.reduce((acc, answer) => {
+export function extractPieData(answers: QuestionAnswer[]) {
+  return answers.reduce((acc, answer) => {
     acc[answer.status] = acc[answer.status] + 1 || 1;
     return acc;
   }, {} as Record<string, number>);

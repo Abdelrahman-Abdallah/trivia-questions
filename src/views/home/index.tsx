@@ -7,7 +7,8 @@ import Button from "../../components/Button";
 import { useDispatch } from "src/store";
 import { addUserToken, setUser } from "src/slices/User";
 import { useNavigate } from "react-router-dom";
-import { Container } from "rendition";
+import { Container, Flex } from "rendition";
+import { useEffect } from "react";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,10 @@ const Home = () => {
     name: "",
     level: Level.easy,
   });
+
+  useEffect(() => {
+    dispatch(addUserToken());
+  }, [dispatch]);
 
   function handleChangeName(event: ChangeEvent<HTMLInputElement>): void {
     setGameOptions((prevState) => ({ ...prevState, name: event.target.value }));
@@ -29,17 +34,18 @@ const Home = () => {
     if (!gameOptions.name) return;
 
     dispatch(setUser({ name: gameOptions.name, level: gameOptions.level }));
-    dispatch(addUserToken());
     navigate("/categories");
   }
 
   return (
     <Page title="Home">
       <Container>
-        <HomeForm onChangeName={handleChangeName} value={gameOptions.name} level={gameOptions.level} onChangeLevel={handleChangeLevel} />
-        <Button topMargin={25} disabled={!gameOptions.name} onClick={handleSubmit}>
-          Submit
-        </Button>
+        <Flex alignItems="center" justifyContent="center" flexDirection="column" height="80vh">
+          <HomeForm onChangeName={handleChangeName} value={gameOptions.name} level={gameOptions.level} onChangeLevel={handleChangeLevel} />
+          <Button topMargin={25} disabled={!gameOptions.name} onClick={handleSubmit}>
+            Submit
+          </Button>
+        </Flex>
       </Container>
     </Page>
   );

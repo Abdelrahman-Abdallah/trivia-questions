@@ -1,11 +1,14 @@
 import { ApexOptions } from "apexcharts";
 import React from "react";
 import Chart from "react-apexcharts";
+import { useSelector } from "src/store";
 import { ANSWERS } from "src/__mocks__/Answers";
 
 const LineChart = () => {
-  const data = ANSWERS.map((ans) => ans.duration);
-  const indexes = ANSWERS.map((answer, index) => index + 1);
+  const answers = useSelector((state) => state.answers.answers);
+
+  const data = answers.map((ans) => ans.duration);
+  const indexes = answers.map((answer, index) => index + 1);
 
   const x = {
     series: [
