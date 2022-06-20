@@ -1,8 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
 import Timer from "src/components/Timer";
 import useTimer from "src/hooks/useTimer";
-import { useSelector } from "src/store";
-import Level from "src/types/Level";
 import { Question } from "src/types/Question";
 import { Box, Button, Container, Flex, Heading } from "rendition";
 import McqQuestions from "./McqQuestions";
@@ -13,15 +11,12 @@ interface QuestionItemProps {
   onNext: (selectedAnswer: string, timing: number) => void;
   onSkip: (time: number) => void;
   answers: string[];
-  timing?: number;
+  questionTime: number;
 }
-const QuestionItem: FC<QuestionItemProps> = ({ onNext, question, onSkip, answers, timing }) => {
-  const level = useSelector((state) => state.user.level);
+const QuestionItem: FC<QuestionItemProps> = ({ onNext, question, onSkip, answers, questionTime }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
 
-  const time = level === Level.easy ? 90 : level === Level.medium ? 60 : 30;
-
-  const currentTime = useTimer(time, onSkip, question.question);
+  const currentTime = useTimer(questionTime, onSkip, question.question);
 
   const handleSubmit = useCallback(() => {
     if (!selectedAnswer) return;
@@ -87,9 +82,10 @@ const QuestionItem: FC<QuestionItemProps> = ({ onNext, question, onSkip, answers
 
   return (
     <div>
-      <Timer degree={(currentTime() / time) * 360} />
+      <Timer degree={(currentTime() / questionTime) * 360} />
       <Container>
         <Box paddingTop={120}>
+          {/*eslint-disable-next-line react/jsx-pascal-case*/}
           <Heading.h3 align="center">{question.question}</Heading.h3>
         </Box>
         {renderAnswers()}

@@ -1,18 +1,18 @@
 import React, { ChangeEvent, useState } from "react";
 import Page from "../../components/page";
-import { CenterdContent } from "../../components/CenteredContent";
 import HomeForm from "./components/HomeForm";
 import Level from "../../types/Level";
-import Button from "../../components/Button";
 import { useDispatch } from "src/store";
 import { addUserToken, setUser } from "src/slices/User";
-import { useNavigate } from "react-router-dom";
-import { Container, Flex } from "rendition";
+import { Container, Flex, Button, Box } from "rendition";
 import { useEffect } from "react";
+import useKeyboardKey from "src/hooks/useKeyboard";
+import { getSelectedItemByKeyClick } from "src/utils/getSelectedItemByKeyClick";
+import { useHistory } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const [gameOptions, setGameOptions] = useState({
     name: "",
@@ -23,6 +23,26 @@ const Home = () => {
     dispatch(addUserToken());
   }, [dispatch]);
 
+  async function handleSubmit(): Promise<void> {
+    if (!gameOptions.name) return;
+
+    dispatch(setUser({ name: gameOptions.name, level: gameOptions.level }));
+    history.push("/categories");
+  }
+
+  const handleKeyClick = (key: string) => {
+    if (key === "s") {
+      handleSubmit();
+      return;
+    }
+
+    const id = getSelectedItemByKeyClick(key, gameOptions.level, 3, Object.values(Level));
+    if (!id) return;
+    setGameOptions((prevState) => ({ ...prevState, level: id }));
+  };
+
+  useKeyboardKey(handleKeyClick);
+
   function handleChangeName(event: ChangeEvent<HTMLInputElement>): void {
     setGameOptions((prevState) => ({ ...prevState, name: event.target.value }));
   }
@@ -30,21 +50,21 @@ const Home = () => {
     setGameOptions((prevState) => ({ ...prevState, level }));
   }
 
-  async function handleSubmit(): Promise<void> {
-    if (!gameOptions.name) return;
-
-    dispatch(setUser({ name: gameOptions.name, level: gameOptions.level }));
-    navigate("/categories");
-  }
-
   return (
     <Page title="Home">
       <Container>
         <Flex alignItems="center" justifyContent="center" flexDirection="column" height="80vh">
           <HomeForm onChangeName={handleChangeName} value={gameOptions.name} level={gameOptions.level} onChangeLevel={handleChangeLevel} />
-          <Button topMargin={25} disabled={!gameOptions.name} onClick={handleSubmit}>
-            Submit
-          </Button>
+
+          <Box my={20}>
+            <Button width={150} primary onClick={handleSubmit} disabled={!gameOptions.name}>
+              Submit
+            </Button>
+          </Box>
+        </Flex>
+        <Flex alignSelf="flex-end" justifyContent="space-evenly">
+          <Box>[Arrow]:Move between choices</Box>
+          <Box>[S]:Submit</Box>
         </Flex>
       </Container>
     </Page>

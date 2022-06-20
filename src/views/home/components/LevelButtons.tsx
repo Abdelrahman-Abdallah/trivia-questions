@@ -6,7 +6,7 @@ import Level from "../../../types/Level";
 const Content = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin: 1rem 0;
 `;
 

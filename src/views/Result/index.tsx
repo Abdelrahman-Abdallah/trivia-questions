@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Button, Container, Flex, Heading } from "rendition";
-import ChartContainer from "src/components/ChatContainer";
+import ChartContainer from "src/components/ChartContainer";
 import { useSelector } from "src/store";
 import AnswersDuration from "./AnswersDuration";
 import LineChart from "./LineChart";
@@ -11,6 +11,7 @@ const Result = () => {
   const { name } = useSelector((state) => state.user);
   return (
     <Container>
+      {/*eslint-disable-next-line react/jsx-pascal-case*/}
       <Heading.h1>{name}</Heading.h1>
       <Flex flexWrap="wrap" justifyContent="center">
         <ChartContainer>
@@ -28,7 +29,6 @@ const Result = () => {
           <LineChart />
         </ChartContainer>
       </Flex>
-
       <Box my={20}>
         <Flex alignItems="center" justifyContent="center">
           <Button>NEW GAME</Button>

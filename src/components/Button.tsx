@@ -7,17 +7,19 @@ interface ButtonProps {
 }
 
 const Button = styled("button")<ButtonProps>`
-  padding: 1rem;
+  padding: 0.5 rem 1rem;
+  height: 40px;
   text-align: center;
   font-size: 1rem;
   border-radius: 10px;
-  width: 25%;
+  flex: 0 30%;
   max-width: 300px;
+  border: none;
   margin-top: ${(props) => (props.topMargin ? `${props.topMargin}px` : "0")};
   ${(props) =>
     props.isSelected &&
     css`
-      background-color: black;
+      background-color: #1a72cd;
       color: white;
     `};
   ${(props) =>

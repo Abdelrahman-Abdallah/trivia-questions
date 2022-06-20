@@ -1,51 +1,49 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useHistory, useParams } from "react-router-dom";
+import Loader from "src/components/Loader";
 import Page from "src/components/page";
 import { getQuestions } from "src/lib/questions";
 import { addAnswer } from "src/slices/Answers";
+import { fetchCategoryQuestions, resetActiveQuestions } from "src/slices/Categories";
 // import { addQuestionStatus } from "src/slices/Questions";
 import { useDispatch, useSelector } from "src/store";
+import Level from "src/types/Level";
 import { Question } from "src/types/Question";
-import QUESTIONS from "src/__mocks__/questions";
 import QuestionItem from "./QuestionItem";
 
 const Questions = () => {
-  const navigate = useNavigate();
+  const history = useHistory();
+
   const dispatch = useDispatch();
-  const { level, token } = useSelector((state) => state.user);
-  const selectedCateogy = useSelector((state) => state.categories.selectedCategories);
 
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const { categoryQuestions: questions, activeCatgory } = useSelector((state) => state.categories);
+  const level = useSelector((state) => state.user.level);
   const [selectedQuestion, setSelectedQuesiton] = useState<Question | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const category = selectedCateogy[selectedCateogy.length - 1];
-  console.log("🚀 ~ file: index.tsx ~ line 22 ~ Questions ~ category", category);
-
-  const fetchQuestions = useCallback(async () => {
-    try {
-      const questions = await getQuestions(level, token, category);
-      console.log("🚀 ~ file: index.tsx ~ line 27 ~ fetchQuestions ~ questions", questions);
-      setQuestions(questions);
-      setSelectedQuesiton(questions[0]);
-    } catch (err) {
-      console.log("🚀 ~ file: index.tsx ~ line 33 ~ fetchQuestions ~ err", err);
-    }
-  }, [level, token, category]);
+  const questionTime = level === Level.easy ? 90 : level === Level.medium ? 60 : 30;
 
   useEffect(() => {
-    fetchQuestions();
-  }, [level, token, category, fetchQuestions]);
+    dispatch(fetchCategoryQuestions());
+
+    return () => {
+      dispatch(resetActiveQuestions());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (questions.length > 0) setSelectedQuesiton(questions[0]);
+  }, [questions]);
 
   const handleChangeNextQuestion = useCallback((): void => {
     if (!selectedQuestion) return;
     const index = questions.findIndex(({ question }) => question === selectedQuestion.question);
+    console.log("🚀 ~ file: index.tsx ~ line 40 ~ handleChangeNextQuestion ~ index", index);
     if (index === questions.length - 1) {
-      navigate("/categories");
+      history.push("/categories");
     } else {
       setSelectedQuesiton({ ...questions[index + 1] });
     }
-  }, [navigate, questions, selectedQuestion]);
+  }, [history, questions, selectedQuestion]);
 
   function getShuffledAnswers(): string[] {
     const answers = [...selectedQuestion.incorrect_answers, selectedQuestion.correct_answer];
@@ -58,24 +56,34 @@ const Questions = () => {
       if (!selectedQuestion) return;
       const isCorrectAnswer = answer === selectedQuestion.correct_answer;
 
-      dispatch(addAnswer({ category, duration, status: isCorrectAnswer ? "correct" : "wrong" }));
+      dispatch(addAnswer({ category: activeCatgory, duration, status: isCorrectAnswer ? "correct" : "wrong" }));
       handleChangeNextQuestion();
     },
-    [handleChangeNextQuestion, selectedQuestion, category, dispatch]
+    [handleChangeNextQuestion, selectedQuestion, activeCatgory, dispatch]
   );
 
-  function handleSkipQuestion(duration: number): void {
-    dispatch(addAnswer({ category, duration, status: "skipped" }));
-    handleChangeNextQuestion();
-  }
+  const handleSkipQuestion = useCallback(
+    (duration: number): void => {
+      dispatch(addAnswer({ category: activeCatgory, duration, status: "skipped" }));
+      handleChangeNextQuestion();
+    },
+    [dispatch, activeCatgory, handleNextQuestion]
+  );
 
   function renderQuestion() {
-    if (isLoading) return <h1>LOADING</h1>;
-    if (questions.length === 0 || !selectedQuestion || isLoading) return <h1>Loading...</h1>;
-    return <QuestionItem question={selectedQuestion} onNext={handleNextQuestion} onSkip={handleSkipQuestion} answers={getShuffledAnswers()} />;
+    if (questions.length === 0 || !selectedQuestion) return <Loader />;
+    return (
+      <QuestionItem
+        question={selectedQuestion}
+        onNext={handleNextQuestion}
+        onSkip={handleSkipQuestion}
+        answers={getShuffledAnswers()}
+        questionTime={questionTime}
+      />
+    );
   }
 
   return <Page title="Questions">{renderQuestion()}</Page>;
 };
 
-export default React.memo(Questions);
+export default Questions;

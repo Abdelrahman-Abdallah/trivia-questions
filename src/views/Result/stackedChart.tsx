@@ -1,8 +1,6 @@
 import { ApexOptions } from "apexcharts";
-import React from "react";
 import Chart from "react-apexcharts";
 import { useSelector } from "src/store";
-import { ANSWERS } from "src/__mocks__/Answers";
 import { extractStackChartData } from "./helpers";
 
 const StackedChart = () => {

@@ -1,4 +1,5 @@
-export function getSelectedId(keyClicked: string, currentItem: string, rowSize: number, items: string[]) {
+export function getSelectedItemByKeyClick<T>(keyClicked: string, currentItem: T, rowSize: number, items: T[]): T {
+  if (keyClicked !== "ArrowLeft" && keyClicked !== "ArrowRight" && keyClicked !== "ArrowUp" && keyClicked !== "ArrowDown") return;
   if (!currentItem) return items[0];
 
   const itemIndex = items.indexOf(currentItem);

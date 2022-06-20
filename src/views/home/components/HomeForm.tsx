@@ -1,17 +1,16 @@
 import { ChangeEvent, FC } from "react";
+import { Input } from "rendition";
 import styled from "styled-components";
-import Button from "../../../components/Button";
-import TextInput from "../../../components/TextInput";
 import Level from "../../../types/Level";
 import LevelButtons from "./LevelButtons";
 
 const Container = styled.div`
-  background-color: #ddd;
   padding: 1rem;
   width: 45%;
   text-align: center;
-  padding: 3rem 0.4rem;
+  padding: 3rem 1.4rem;
   border-radius: 10px;
+  box-shadow: 2px 9px 19px -1px rgba(0, 0, 0, 0.5);
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -32,7 +31,8 @@ interface HomeFormProps {
 const HomeForm: FC<HomeFormProps> = ({ onChangeName, value, level, onChangeLevel }) => {
   return (
     <Container>
-      <TextInput onChange={onChangeName} value={value} type="text" placeholder="enter your name" />
+      <Input onChange={onChangeName} value={value} placeholder="enter your name" />
+      {/* <TextInput onChange={onChangeName} value={value} type="text" placeholder="enter your name" /> */}
       <LevelButtons level={level} onChangeLevel={onChangeLevel} />
     </Container>
   );

@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
-import { Route, Routes } from "react-router-dom";
-import CategoriesGuard from "./guards/categoriesGuard";
+import { Route, Switch } from "react-router-dom";
+import RouterGuard from "./guards/RouterGuard";
 import { AppRoute } from "./types/Common";
 import Categories from "./views/categories";
 import Home from "./views/home";
@@ -11,9 +11,9 @@ const ROUTES: AppRoute[] = [
   {
     path: "/categories",
     component: Categories,
-    guard: CategoriesGuard,
+    guard: RouterGuard,
   },
-  { path: "/question", component: Questions },
+  { path: "/question/", component: Questions },
   { path: "/result", component: Result },
   { path: "/", exact: true, component: Home },
 ];
@@ -21,19 +21,15 @@ const ROUTES: AppRoute[] = [
 const AppRoutes = () => {
   function renderRoutes(): JSX.Element[] {
     return ROUTES.map(({ component: Element, path, guard: Guard = Fragment }) => (
-      <Route
-        key={path}
-        path={path}
-        element={
-          <Guard>
-            <Element />
-          </Guard>
-        }
-      />
+      <Route path={path} key={path}>
+        <Guard>
+          <Element />
+        </Guard>
+      </Route>
     ));
   }
 
-  return <Routes>{renderRoutes()}</Routes>;
+  return <Switch>{renderRoutes()}</Switch>;
 };
 
 export default AppRoutes;
