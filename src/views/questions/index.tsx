@@ -33,7 +33,6 @@ const Questions = () => {
   const handleChangeNextQuestion = useCallback((): void => {
     if (!selectedQuestion) return;
     const index = questions.findIndex(({ question }) => question === selectedQuestion.question);
-    console.log("🚀 ~ file: index.tsx ~ line 40 ~ handleChangeNextQuestion ~ index", index);
     if (index === questions.length - 1) {
       history.push("/categories");
     } else {
