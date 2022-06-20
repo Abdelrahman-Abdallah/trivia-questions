@@ -1,4 +1,4 @@
-import { AnswerStatus, QuestionAnswer } from "src/types/Answer";
+import { QuestionAnswer } from "src/types/Answer";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AnswersState {

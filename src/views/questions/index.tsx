@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useLocation, useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Loader from "src/components/Loader";
 import Page from "src/components/page";
-import { getQuestions } from "src/lib/questions";
 import { addAnswer } from "src/slices/Answers";
-import { fetchCategoryQuestions, resetActiveQuestions } from "src/slices/Categories";
-// import { addQuestionStatus } from "src/slices/Questions";
+import { fetchCategoryQuestions } from "src/slices/Categories";
 import { useDispatch, useSelector } from "src/store";
 import Level from "src/types/Level";
 import { Question } from "src/types/Question";

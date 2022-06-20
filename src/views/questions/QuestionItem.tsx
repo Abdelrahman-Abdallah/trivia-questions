@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useState } from "react";
 import Timer from "src/components/Timer";
 import useTimer from "src/hooks/useTimer";
 import { Question } from "src/types/Question";
-import { Box, Button, Container, Flex, Heading } from "rendition";
+import { Box, Button, Flex, Heading } from "rendition";
 import McqQuestions from "./McqQuestions";
 import useKeyboardKey from "src/hooks/useKeyboard";
 import KeysInstructions from "src/components/KeysInstructions";

@@ -1,4 +1,3 @@
-import { QuestionAnswer } from "./../types/Answer";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getCateories } from "../lib/categories";
 import { AppThunk } from "../store/index";

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, Container, Flex } from "rendition";
+import { Container, Flex } from "rendition";
 import QuestionButton from "src/components/QuestionButton";
 import QuestionButtonKey from "src/components/QuestionButtonKey";
 
