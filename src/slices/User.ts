@@ -29,12 +29,11 @@ export const userSlice = createSlice({
     resetUser: (state): void => {
       state.level = Level.easy;
       state.name = "";
-      state.token = "";
     },
   },
 });
 
-export const { setUser, setUserToken } = userSlice.actions;
+export const { setUser, setUserToken, resetUser } = userSlice.actions;
 
 export const addUserToken =
   (): AppThunk =>

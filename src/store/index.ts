@@ -1,9 +1,9 @@
 import { TypedUseSelectorHook, useSelector as useReduxSelector, useDispatch as useReduxDispatch } from "react-redux";
 import { AnyAction, configureStore, ThunkAction } from "@reduxjs/toolkit";
 
-import categoriesReducer from "../slices/Categories";
-import userReducer from "../slices/User";
-import answersReducer from "../slices/Answers";
+import categoriesReducer, { resetActiveQuestions, resetCategoryState } from "../slices/Categories";
+import userReducer, { resetUser } from "../slices/User";
+import answersReducer, { resetAnswers } from "../slices/Answers";
 
 export const store = configureStore({
   reducer: {
@@ -21,4 +21,9 @@ export type AppDispatch = typeof store.dispatch;
 export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 export const useDispatch = () => useReduxDispatch<AppDispatch>();
 
-export function resetStore() {}
+export function resetStore() {
+  store.dispatch(resetAnswers());
+  store.dispatch(resetActiveQuestions());
+  store.dispatch(resetUser());
+  store.dispatch(resetCategoryState());
+}

@@ -17,7 +17,8 @@ interface CategoryContainerProps {
 
 const CategoryContainer = styled("div")<CategoryContainerProps>`
   padding: 2rem;
-  background: #ddd;
+  background: linear-gradient(288deg, var(--category-color-primary), var(--category-color-secodary));
+  color: var(--text-color-primary-ligth);
   display: flex;
   justify-content: center;
   align-items: center;

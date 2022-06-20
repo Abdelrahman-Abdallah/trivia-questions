@@ -23,6 +23,6 @@ export const AnswersSlice = createSlice({
   },
 });
 
-export const { addAnswer } = AnswersSlice.actions;
+export const { addAnswer, resetAnswers } = AnswersSlice.actions;
 
 export default AnswersSlice.reducer;

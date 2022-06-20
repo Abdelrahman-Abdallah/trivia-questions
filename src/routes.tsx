@@ -1,5 +1,7 @@
 import React, { Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
+import QuestionsGuard from "./guards/QuestionGuard";
+import ResultGuard from "./guards/ResultGuard";
 import RouterGuard from "./guards/RouterGuard";
 import { AppRoute } from "./types/Common";
 import Categories from "./views/categories";
@@ -13,8 +15,8 @@ const ROUTES: AppRoute[] = [
     component: Categories,
     guard: RouterGuard,
   },
-  { path: "/question/", component: Questions },
-  { path: "/result", component: Result },
+  { path: "/question/", component: Questions, guard: QuestionsGuard },
+  { path: "/result", component: Result, guard: ResultGuard },
   { path: "/", exact: true, component: Home },
 ];
 

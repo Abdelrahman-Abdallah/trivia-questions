@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, Flex } from "rendition";
+import { Box, Container, Flex } from "rendition";
 import QuestionButton from "src/components/QuestionButton";
 import QuestionButtonKey from "src/components/QuestionButtonKey";
 
@@ -27,11 +27,11 @@ const McqQuestions: FC<McqQuestionsProps> = ({ answers, selectedAnswer, onChange
   }
 
   return (
-    <Box m={50} py={50}>
+    <Container marginTop={25} marginBottom={25}>
       <Flex flexWrap="wrap" justifyContent="center">
         {renderAnswers()}
       </Flex>
-    </Box>
+    </Container>
   );
 };
 

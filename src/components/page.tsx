@@ -3,8 +3,7 @@ import Helmet from "react-helmet";
 import styled from "styled-components";
 
 const PageComponent = styled.div`
-  height: 100vh;
-  background-color: ##eee;
+  min-height: 100vh;
 `;
 
 interface PageProps {

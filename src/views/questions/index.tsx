@@ -24,10 +24,6 @@ const Questions = () => {
 
   useEffect(() => {
     dispatch(fetchCategoryQuestions());
-
-    return () => {
-      dispatch(resetActiveQuestions());
-    };
   }, [dispatch]);
 
   useEffect(() => {
@@ -55,7 +51,6 @@ const Questions = () => {
     (answer: string, duration: number) => {
       if (!selectedQuestion) return;
       const isCorrectAnswer = answer === selectedQuestion.correct_answer;
-
       dispatch(addAnswer({ category: activeCatgory, duration, status: isCorrectAnswer ? "correct" : "wrong" }));
       handleChangeNextQuestion();
     },
@@ -67,7 +62,7 @@ const Questions = () => {
       dispatch(addAnswer({ category: activeCatgory, duration, status: "skipped" }));
       handleChangeNextQuestion();
     },
-    [dispatch, activeCatgory, handleNextQuestion]
+    [dispatch, activeCatgory, handleChangeNextQuestion]
   );
 
   function renderQuestion() {

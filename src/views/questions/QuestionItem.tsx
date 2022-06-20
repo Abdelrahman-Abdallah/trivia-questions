@@ -5,6 +5,9 @@ import { Question } from "src/types/Question";
 import { Box, Button, Container, Flex, Heading } from "rendition";
 import McqQuestions from "./McqQuestions";
 import useKeyboardKey from "src/hooks/useKeyboard";
+import KeysInstructions from "src/components/KeysInstructions";
+import { getSelectedItemByKeyClick } from "src/utils/getSelectedItemByKeyClick";
+import QuestionHeading from "src/components/QuestionHeading";
 
 interface QuestionItemProps {
   question: Question;
@@ -58,11 +61,14 @@ const QuestionItem: FC<QuestionItemProps> = ({ onNext, question, onSkip, answers
         case "s":
           handleSkip();
           return;
-        default:
+        default: {
+          const id = getSelectedItemByKeyClick(key, selectedAnswer, 2, answers);
+          if (id) setSelectedAnswer(id);
           break;
+        }
       }
     },
-    [answers, handleSkip, handleSubmit, question.type]
+    [answers, handleSkip, handleSubmit, question.type, selectedAnswer]
   );
   useKeyboardKey(handleKeyPress);
 
@@ -83,14 +89,16 @@ const QuestionItem: FC<QuestionItemProps> = ({ onNext, question, onSkip, answers
   return (
     <div>
       <Timer degree={(currentTime() / questionTime) * 360} />
-      <Container>
+      <div>
         <Box paddingTop={120}>
           {/*eslint-disable-next-line react/jsx-pascal-case*/}
-          <Heading.h3 align="center">{question.question}</Heading.h3>
+          <Heading.h3 align="center">
+            <QuestionHeading>{question.question}</QuestionHeading>
+          </Heading.h3>
         </Box>
         {renderAnswers()}
 
-        <Flex justifyContent="space-evenly">
+        <Flex justifyContent="space-around">
           <Button onClick={handleSkip} color="secondary">
             Skip
           </Button>
@@ -98,17 +106,16 @@ const QuestionItem: FC<QuestionItemProps> = ({ onNext, question, onSkip, answers
             Next
           </Button>
         </Flex>
-        <Box marginTop={10}>
-          <Flex justifyContent="space-evenly">
-            <Box>[n]:Next</Box>
-            <Box>[s]:Skip</Box>
-            {question.type !== "boolean" && <Box>[1,2,3,4]:Choose Answers</Box>}
-            {question.type === "boolean" && <Box>[t,f]:Choose answers</Box>}
-          </Flex>
-        </Box>
-      </Container>
+        <KeysInstructions position="fixed">
+          <Box>[n]:Next</Box>
+          <Box>[s]:Skip</Box>
+          <Box>[ArrowKeys]:to select answer</Box>
+          {question.type !== "boolean" && <Box>[1,2,3,4]:Choose Answers</Box>}
+          {question.type === "boolean" && <Box>[t,f]:Choose answers</Box>}
+        </KeysInstructions>
+      </div>
     </div>
   );
 };
 
-export default React.memo(QuestionItem);
+export default QuestionItem;

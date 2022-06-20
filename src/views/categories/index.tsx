@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
-// import Button from "src/components/Button";
+import React, { useEffect, useState } from "react";
 import CenteredItemComponet from "src/components/CenteredItemContainer";
 import { useDispatch, useSelector } from "src/store";
 import Page from "../../components/page";
@@ -11,7 +10,7 @@ import { Box, Button, Flex } from "rendition";
 import Loader from "src/components/Loader";
 import { getSelectedItemByKeyClick } from "src/utils/getSelectedItemByKeyClick";
 import useKeyboardKey from "src/hooks/useKeyboard";
-import { NUM_OF_ALLOWED_CATEGORIES, NUM_OF_ALLOWED_QUESTION } from "src/constants";
+import KeysInstructions from "src/components/KeysInstructions";
 
 const ROW_SIZE = 3;
 
@@ -20,7 +19,6 @@ const Categories = () => {
   const history = useHistory();
 
   const { selectedCategories, isLoaded, categories } = useSelector((state) => state.categories);
-  const answers = useSelector((state) => state.answers.answers);
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleChangeSelectedCategory = (catId: string): void => {
@@ -68,6 +66,10 @@ const Categories = () => {
             </Button>
           </CenteredItemComponet>
         </Box>
+        <KeysInstructions position="unset">
+          <Box>[ Arrows ]:Move between choices</Box>
+          <Box>[ Enter ]:To Play</Box>
+        </KeysInstructions>
       </>
     );
   }
@@ -77,10 +79,7 @@ const Categories = () => {
       <PageHeader>Questions Categories</PageHeader>
       {renderCategoryContent()}
 
-      <Flex>
-        <Box>[Arrows]:Move between choices</Box>
-        <Box>[Arrows]:Move between choices</Box>
-      </Flex>
+      <Flex></Flex>
     </Page>
   );
 };

@@ -4,6 +4,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #f4f6f8; /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to right, #3b8d99, #6b6b83, #aa4b6b);
+  background: linear-gradient(to right, #3b8d99, #6b6b83, #aa4b6b); */
+  background-color: var(--background-color-primary-light);
+}
+
+:root {
+  --background-color-primary-light: #f4f6f8;
+  --category-color-primary: #0c3852e6;
+  --category-color-secodary: #2e8dc7e6;
+  --text-color-primary-ligth: #fff;
+  --text-color-primary-dark: black;
+  --headers-color-primary-light: "#333";
+  --question-hot-key-color: black;
 }
 
 code {

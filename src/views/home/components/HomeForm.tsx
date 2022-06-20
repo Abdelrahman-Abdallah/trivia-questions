@@ -12,6 +12,7 @@ const Container = styled.div`
   border-radius: 10px;
   box-shadow: 2px 9px 19px -1px rgba(0, 0, 0, 0.5);
 
+  background: linear-gradient(288deg, var(--category-color-primary), var(--category-color-secodary));
   @media (max-width: 768px) {
     flex-direction: column;
     width: 60%;
@@ -31,8 +32,7 @@ interface HomeFormProps {
 const HomeForm: FC<HomeFormProps> = ({ onChangeName, value, level, onChangeLevel }) => {
   return (
     <Container>
-      <Input onChange={onChangeName} value={value} placeholder="enter your name" />
-      {/* <TextInput onChange={onChangeName} value={value} type="text" placeholder="enter your name" /> */}
+      <Input onChange={onChangeName} value={value} placeholder="enter your name" color="#FFF" />
       <LevelButtons level={level} onChangeLevel={onChangeLevel} />
     </Container>
   );

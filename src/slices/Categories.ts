@@ -12,6 +12,7 @@ interface CategoriesState {
   isLoaded: boolean;
   activeCatgory: string;
   categoryQuestions: Question[];
+  isLoadingCategoryQuestions: boolean;
 }
 
 const initialState: CategoriesState = {
@@ -20,6 +21,7 @@ const initialState: CategoriesState = {
   isLoaded: false,
   activeCatgory: "",
   categoryQuestions: [],
+  isLoadingCategoryQuestions: false,
 };
 
 export const categoriesSlice = createSlice({
@@ -38,16 +40,28 @@ export const categoriesSlice = createSlice({
       const { activeCategory, questions } = action.payload;
       state.activeCatgory = activeCategory;
       state.categoryQuestions = questions;
+      state.isLoadingCategoryQuestions = false;
     },
 
     resetActiveQuestions: (state) => {
       state.activeCatgory = "";
       state.categoryQuestions = [];
+      state.isLoadingCategoryQuestions = false;
+    },
+    resetCategoryState: (state) => {
+      state.selectedCategories = [];
+      state.activeCatgory = "";
+      state.categoryQuestions = [];
+      state.isLoadingCategoryQuestions = false;
+    },
+    toggleLoadingQuestions: (state) => {
+      state.isLoadingCategoryQuestions = !state.isLoadingCategoryQuestions;
     },
   },
 });
 
-export const { setCategories, addSelectedCategory, resetActiveQuestions, setCategoryQuestions } = categoriesSlice.actions;
+export const { setCategories, addSelectedCategory, resetActiveQuestions, setCategoryQuestions, resetCategoryState, toggleLoadingQuestions } =
+  categoriesSlice.actions;
 
 export const fetchSliceCategories =
   (): AppThunk =>
@@ -62,8 +76,9 @@ export const fetchCategoryQuestions =
   async (dispatch, getState): Promise<void> => {
     try {
       const categoryId = [...getState().categories.selectedCategories].pop();
-      console.log("🚀 ~ file: Categories.ts ~ line 64 ~ categoryId", categoryId);
       const { level, token } = getState().user;
+      if (getState().categories.isLoadingCategoryQuestions) return;
+      dispatch(toggleLoadingQuestions());
 
       const questions = await getQuestions(level, token, categoryId);
       dispatch(setCategoryQuestions({ activeCategory: categoryId, questions }));

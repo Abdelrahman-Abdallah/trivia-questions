@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import useKeyboardKey from "src/hooks/useKeyboard";
 import { getSelectedItemByKeyClick } from "src/utils/getSelectedItemByKeyClick";
 import { useHistory } from "react-router-dom";
+import KeysInstructions from "src/components/KeysInstructions";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -62,11 +63,11 @@ const Home = () => {
             </Button>
           </Box>
         </Flex>
-        <Flex alignSelf="flex-end" justifyContent="space-evenly">
-          <Box>[Arrow]:Move between choices</Box>
-          <Box>[S]:Submit</Box>
-        </Flex>
       </Container>
+      <KeysInstructions position="absolute">
+        <Box>[Arrow]:Move between choices</Box>
+        <Box>[S]:Submit</Box>
+      </KeysInstructions>
     </Page>
   );
 };

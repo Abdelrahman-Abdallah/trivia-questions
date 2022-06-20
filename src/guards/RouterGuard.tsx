@@ -14,13 +14,17 @@ const RouterGuard: FC<RouterGuardProps> = ({ children }) => {
   const { answers } = useSelector((state) => state.answers);
   const { selectedCategories } = useSelector((state) => state.categories);
 
-  if (!name || !token) return <Redirect to="/" replace />;
+  if (!name || !token) return <Redirect to="/" />;
   const isResultsRedirect =
-    selectedCategories.length === NUM_OF_ALLOWED_CATEGORIES && answers.length >= NUM_OF_ALLOWED_CATEGORIES * NUM_OF_ALLOWED_QUESTION - 1;
+    selectedCategories.length >= NUM_OF_ALLOWED_CATEGORIES && answers.length >= NUM_OF_ALLOWED_CATEGORIES * NUM_OF_ALLOWED_QUESTION - 1;
+
+  const isCategoryRedirect =
+    selectedCategories.length <= NUM_OF_ALLOWED_CATEGORIES && answers.length < NUM_OF_ALLOWED_CATEGORIES * NUM_OF_ALLOWED_QUESTION;
 
   return (
     <Fragment>
       {isResultsRedirect && <Redirect to="/result" />}
+      {isCategoryRedirect && <Redirect to="/categories" />}
       {children}
     </Fragment>
   );
