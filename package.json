@@ -1,7 +1,7 @@
 {
   "name": "trivia-questions",
   "version": "0.1.0",
-  "homepage": "https://abdelrahman-abdallah.github.io/trivia-questions/",
+  "homepage": "/",
   "private": false,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.2",
